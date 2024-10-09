@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Square Root Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input[type="number"] {
+            width: 100px;
+            padding: 5px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 5px 10px;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Square Root Converter</h1>
+    <p>Enter a number to find its square root:</p>
+    <input type="number" id="numberInput" placeholder="Enter a number" />
+    <button onclick="calculateSquareRoot()">Calculate Square Root</button>
+
+    <div class="result" id="result"></div>
+
+    <script>
+        function calculateSquareRoot() {
+            const number = document.getElementById('numberInput').value;
+            const resultDiv = document.getElementById('result');
+
+            if (number < 0) {
+                resultDiv.innerHTML = "Please enter a non-negative number.";
+            } else {
+                const squareRoot = Math.sqrt(number);
+                resultDiv.innerHTML = `The square root of ${number} is ${squareRoot.toFixed(2)}.`;
+            }
+        }
+    </script>
+
+</body>
+</html>

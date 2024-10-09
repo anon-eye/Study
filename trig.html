@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Trigonometry Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+        }
+        #angle ,#inputValue{
+            width:93%;
+        }
+        #font{
+            margin-bottom:1px;
+
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Trigonometry Calculator</h1>
+    <label for="angle">Enter Angle (in degrees):</label>
+    <input type="number" id="angle" placeholder="Angle in degrees" required>
+
+    <label for="value">Choose a value to input:</label>
+    <select id="value">
+        <option value="height">Height</option>
+        <option value="width">Width</option>
+        <option value="hypotenuse">Hypotenuse</option>
+    </select>
+
+    <label for="inputValue">Enter Value:</label>
+    <input type="number" id="inputValue" placeholder="Value" required>
+
+    <label for="ratio">Choose Trigonometric Ratio:</label>
+    <select id="ratio">
+        <option value="sin">Sin</option>
+        <option value="cos">Cos</option>
+        <option value="tan">Tan</option>
+        <option value="cosec">Cosec</option>
+        <option value="sec">Sec</option>
+        <option value="cot">Cot</option>
+    </select>
+
+    <button onclick="calculate()">Calculate</button>
+
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+    function calculate() {
+        const angle = parseFloat(document.getElementById('angle').value);
+        const valueType = document.getElementById('value').value;
+        const inputValue = parseFloat(document.getElementById('inputValue').value);
+        const ratio = document.getElementById('ratio').value;
+
+        const angleInRadians = angle * (Math.PI / 180);
+        let height, width, hypotenuse;
+
+        if (valueType === 'height') {
+            height = inputValue;
+            hypotenuse = height / Math.sin(angleInRadians);
+            width = hypotenuse * Math.cos(angleInRadians);
+        } else if (valueType === 'width') {
+            width = inputValue;
+            hypotenuse = width / Math.cos(angleInRadians);
+            height = hypotenuse * Math.sin(angleInRadians);
+        } else if (valueType === 'hypotenuse') {
+            hypotenuse = inputValue;
+            height = hypotenuse * Math.sin(angleInRadians);
+            width = hypotenuse * Math.cos(angleInRadians);
+        }
+
+        // Adjust for cosec, sec, and cot
+        if (ratio === 'cosec') {
+            height = hypotenuse * Math.sin(angleInRadians);
+            hypotenuse = height / Math.sin(angleInRadians);
+            width = hypotenuse * Math.cos(angleInRadians);
+        } else if (ratio === 'sec') {
+            width = hypotenuse * Math.cos(angleInRadians);
+            hypotenuse = width / Math.cos(angleInRadians);
+            height = hypotenuse * Math.sin(angleInRadians);
+        } else if (ratio === 'cot') {
+            width = hypotenuse * Math.cos(angleInRadians);
+            height = hypotenuse * Math.sin(angleInRadians);
+            hypotenuse = height / Math.sin(angleInRadians);
+        }
+
+        document.getElementById('result').innerHTML = `
+            <strong>Results:</strong><br>
+            Height: ${height.toFixed(2)}<br>
+            Width: ${width.toFixed(2)}<br>
+            Hypotenuse: ${hypotenuse.toFixed(2)}
+        `;
+    }
+</script>
+
+<footer><h6 id="font">Anoneye</h6></footer>
+
+</body>
+</html>

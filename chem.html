@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Chemistry Elements Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        input[type="text"] {
+            width: 100%;
+            height:30px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #000000;
+            border-radius: 50px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+
+            padding: 20px;
+            text-align: left;
+            font-size:22px;
+            border: 1px solid #000;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        #searchBar{
+            font-size:30px;
+            border:5px solid;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Chemistry Elements Search</h1>
+<input type="text" id="searchBar" placeholder="Search for elements..." onkeyup="searchElements()">
+
+<table id="elementsTable">
+    <thead>
+        <tr>
+            <th>Atomic Number</th>
+            <th>Name</th>
+            <th>Atomic Mass</th>
+            <th>Valency</th>
+            <th>State</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Elements will be populated here -->
+    </tbody>
+</table>
+
+<script>
+    const elements = [
+
+    { "atomicNumber": 1, "name": "Hydrogen", "atomicMass": 1.008, "valency": 1, "state": "gas", "type": "nonmetal" },
+    { "atomicNumber": 2, "name": "Helium", "atomicMass": 4.0026, "valency": 0, "state": "gas", "type": "nonmetal" },
+    { "atomicNumber": 3, "name": "Lithium", "atomicMass": 6.94, "valency": 1, "state": "solid", "type": "metal" },
+    { "atomicNumber": 4, "name": "Beryllium", "atomicMass": 9.0122, "valency": 2, "state": "solid", "type": "metal" },
+    { "atomicNumber": 5, "name": "Boron", "atomicMass": 10.81, "valency": 3, "state": "solid", "type": "metalloid" },
+    { "atomicNumber": 6, "name": "Carbon", "atomicMass": 12.011, "valency": 4, "state": "solid", "type": "nonmetal" },
+    { "atomicNumber": 7, "name": "Nitrogen", "atomicMass": 14.007, "valency": 3, "state": "gas", "type": "nonmetal" },
+    { "atomicNumber": 8, "name": "Oxygen", "atomicMass": 15.999, "valency": 2, "state": "gas", "type": "nonmetal" },
+    { "atomicNumber": 9, "name": "Fluorine", "atomicMass": 18.998, "valency": 1, "state": "gas", "type": "nonmetal" },
+    { "atomicNumber": 10, "name": "Neon", "atomicMass": 20.180, "valency": 0, "state": "gas", "type": "nonmetal" },
+    { "atomicNumber": 11, "name": "Sodium", "atomicMass": 22.990, "valency": 1, "state": "solid", "type": "metal" },
+    { "atomicNumber": 12, "name": "Magnesium", "atomicMass": 24.305, "valency": 2, "state": "solid", "type": "metal" },
+    { "atomicNumber": 13, "name": "Aluminum", "atomicMass": 26.982, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 14, "name": "Silicon", "atomicMass": 28.085, "valency": 4, "state": "solid", "type": "metalloid" },
+    { "atomicNumber": 15, "name": "Phosphorus", "atomicMass": 30.974, "valency": 3, "state": "solid", "type": "nonmetal" },
+    { "atomicNumber": 16, "name": "Sulfur", "atomicMass": 32.06, "valency": 2, "state": "solid", "type": "nonmetal" },
+    { "atomicNumber": 17, "name": "Chlorine", "atomicMass": 35.45, "valency": 1, "state": "gas", "type": "nonmetal" },
+    { "atomicNumber": 18, "name": "Argon", "atomicMass": 39.948, "valency": 0, "state": "gas", "type": "nonmetal" },
+    { "atomicNumber": 19, "name": "Potassium", "atomicMass": 39.098, "valency": 1, "state": "solid", "type": "metal" },
+    { "atomicNumber": 20, "name": "Calcium", "atomicMass": 40.078, "valency": 2, "state": "solid", "type": "metal" },
+    { "atomicNumber": 21, "name": "Scandium", "atomicMass": 44.956, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 22, "name": "Titanium", "atomicMass": 47.867, "valency": 4, "state": "solid", "type": "metal" },
+    { "atomicNumber": 23, "name": "Vanadium", "atomicMass": 50.941, "valency": 5, "state": "solid", "type": "metal" },
+    { "atomicNumber": 24, "name": "Chromium", "atomicMass": 51.996, "valency": 6, "state": "solid", "type": "metal" },
+    { "atomicNumber": 25, "name": "Manganese", "atomicMass": 54.938, "valency": 7, "state": "solid", "type": "metal" },
+    { "atomicNumber": 26, "name": "Iron", "atomicMass": 55.845, "valency": 2, "state": "solid", "type": "metal" },
+    { "atomicNumber": 27, "name": "Cobalt", "atomicMass": 58.933, "valency": 2, "state": "solid", "type": "metal" },
+    { "atomicNumber": 28, "name": "Nickel", "atomicMass": 58.693, "valency": 2, "state": "solid", "type": "metal" },
+    { "atomicNumber": 29, "name": "Copper", "atomicMass": 63.546, "valency": 1, "state": "solid", "type": "metal" },
+    { "atomicNumber": 30, "name": "Zinc", "atomicMass": 65.38, "valency": 2, "state": "solid", "type": "metal" },
+    { "atomicNumber": 31, "name": "Gallium", "atomicMass": 69.723, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 32, "name": "Germanium", "atomicMass": 72.630, "valency": 4, "state": "solid", "type": "metalloid" },
+    { "atomicNumber": 33, "name": "Arsenic", "atomicMass": 74.922, "valency": 3, "state": "solid", "type": "metalloid" },
+    { "atomicNumber": 34, "name": "Selenium", "atomicMass": 78.971, "valency": 2, "state": "solid", "type": "nonmetal" },
+    { "atomicNumber": 35, "name": "Bromine", "atomicMass": 79.904, "valency": 1, "state": "liquid", "type": "nonmetal" },
+    { "atomicNumber": 36, "name": "Krypton", "atomicMass": 83.798, "valency": 0, "state": "gas", "type": "nonmetal" },
+    { "atomicNumber": 37, "name": "Rubidium", "atomicMass": 85.468, "valency": 1, "state": "solid", "type": "metal" },
+    { "atomicNumber": 38, "name": "Strontium", "atomicMass": 87.62, "valency": 2, "state": "solid", "type": "metal" },
+    { "atomicNumber": 39, "name": "Yttrium", "atomicMass": 88.906, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 40, "name": "Zirconium", "atomicMass": 91.224, "valency": 4, "state": "solid", "type": "metal" },
+    { "atomicNumber": 41, "name": "Niobium", "atomicMass": 92.906, "valency": 5, "state": "solid", "type": "metal" },
+    { "atomicNumber": 42, "name": "Molybdenum", "atomicMass": 95.95, "valency": 6, "state": "solid", "type": "metal" },
+    { "atomicNumber": 43, "name": "Technetium", "atomicMass": 98, "valency": 7, "state": "solid", "type": "metal" },
+    { "atomicNumber": 44, "name": "Ruthenium", "atomicMass": 101.07, "valency": 4, "state": "solid", "type": "metal" },
+    { "atomicNumber": 45, "name": "Rhodium", "atomicMass": 102.91, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 46, "name": "Palladium", "atomicMass": 106.42, "valency": 2, "state": "solid", "type": "metal" },
+    { "atomicNumber": 47, "name": "Silver", "atomicMass": 107.87, "valency": 1, "state": "solid", "type": "metal" },
+    { "atomicNumber": 48, "name": "Cadmium", "atomicMass": 112.41, "valency": 2, "state": "solid", "type": "metal" },
+    { "atomicNumber": 49, "name": "Indium", "atomicMass": 114.82, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 50, "name": "Tin", "atomicMass": 118.71, "valency": 4, "state": "solid", "type": "metal" },
+    { "atomicNumber": 51, "name": "Antimony", "atomicMass": 121.76, "valency": 3, "state": "solid", "type": "metalloid" },
+    { "atomicNumber": 52, "name": "Tellurium", "atomicMass": 127.60, "valency": 2, "state": "solid", "type": "metalloid" },
+    { "atomicNumber": 53, "name": "Iodine", "atomicMass": 126.90, "valency": 1, "state": "solid", "type": "nonmetal" },
+    { "atomicNumber": 54, "name": "Xenon", "atomicMass": 131.29, "valency": 0, "state": "gas", "type": "nonmetal" },
+    { "atomicNumber": 55, "name": "Cesium", "atomicMass": 132.91, "valency": 1, "state": "solid", "type": "metal" },
+    { "atomicNumber": 56, "name": "Barium", "atomicMass": 137.33, "valency": 2, "state": "solid", "type": "metal" },
+    { "atomicNumber": 57, "name": "Lanthanum", "atomicMass": 138.91, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 58, "name": "Cerium", "atomicMass": 140.12, "valency": 4, "state": "solid", "type": "metal" },
+    { "atomicNumber": 59, "name": "Praseodymium", "atomicMass": 140.91, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 60, "name": "Neodymium", "atomicMass": 144.24, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 61, "name": "Promethium", "atomicMass": 145, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 62, "name": "Samarium", "atomicMass": 150.36, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 63, "name": "Europium", "atomicMass": 151.96, "valency": 2, "state": "solid", "type": "metal" },
+    { "atomicNumber": 64, "name": "Gadolinium", "atomicMass": 157.25, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 65, "name": "Terbium", "atomicMass": 158.93, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 66, "name": "Dysprosium", "atomicMass": 162.50, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 67, "name": "Holmium", "atomicMass": 164.93, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 68, "name": "Erbium", "atomicMass": 167.26, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 69, "name": "Thulium", "atomicMass": 168.93, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 70, "name": "Ytterbium", "atomicMass": 173.04, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 71, "name": "Lutetium", "atomicMass": 174.97, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 72, "name": "Hafnium", "atomicMass": 178.49, "valency": 4, "state": "solid", "type": "metal" },
+    { "atomicNumber": 73, "name": "Tantalum", "atomicMass": 180.95, "valency": 5, "state": "solid", "type": "metal" },
+    { "atomicNumber": 74, "name": "Tungsten", "atomicMass": 183.84, "valency": 6, "state": "solid", "type": "metal" },
+    { "atomicNumber": 75, "name": "Rhenium", "atomicMass": 186.21, "valency": 7, "state": "solid", "type": "metal" },
+    { "atomicNumber": 76, "name": "Osmium", "atomicMass": 190.23, "valency": 4, "state": "solid", "type": "metal" },
+    { "atomicNumber": 77, "name": "Iridium", "atomicMass": 192.22, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 78, "name": "Platinum", "atomicMass": 195.08, "valency": 2, "state": "solid", "type": "metal" },
+    { "atomicNumber": 79, "name": "Gold", "atomicMass": 196.97, "valency": 1, "state": "solid", "type": "metal" },
+    { "atomicNumber": 80, "name": "Mercury", "atomicMass": 200.59, "valency": 1, "state": "liquid", "type": "metal" },
+    { "atomicNumber": 81, "name": "Thallium", "atomicMass": 204.38, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 82, "name": "Lead", "atomicMass": 207.2, "valency": 4, "state": "solid", "type": "metal" },
+    { "atomicNumber": 83, "name": "Bismuth", "atomicMass": 208.98, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 84, "name": "Polonium", "atomicMass": 209, "valency": 2, "state": "solid", "type": "metalloid" },
+    { "atomicNumber": 85, "name": "Astatine", "atomicMass": 210, "valency": 1, "state": "solid", "type": "nonmetal" },
+    { "atomicNumber": 86, "name": "Radon", "atomicMass": 222, "valency": 0, "state": "gas", "type": "nonmetal" },
+    { "atomicNumber": 87, "name": "Francium", "atomicMass": 223, "valency": 1, "state": "solid", "type": "metal" },
+    { "atomicNumber": 88, "name": "Radium", "atomicMass": 226, "valency": 2, "state": "solid", "type": "metal" },
+    { "atomicNumber": 89, "name": "Actinium", "atomicMass": 227, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 90, "name": "Thorium", "atomicMass": 232.04, "valency": 4, "state": "solid", "type": "metal" },
+    { "atomicNumber": 91, "name": "Protactinium", "atomicMass": 231.04, "valency": 5, "state": "solid", "type": "metal" },
+    { "atomicNumber": 92, "name": "Uranium", "atomicMass": 238.03, "valency": 6, "state": "solid", "type": "metal" },
+    { "atomicNumber": 93, "name": "Neptunium", "atomicMass": 237, "valency": 5, "state": "solid", "type": "metal" },
+    { "atomicNumber": 94, "name": "Plutonium", "atomicMass": 244, "valency": 4, "state": "solid", "type": "metal" },
+    { "atomicNumber": 95, "name": "Americium", "atomicMass": 243, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 96, "name": "Curium", "atomicMass": 247, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 97, "name": "Berkelium", "atomicMass": 247, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 98, "name": "Californium", "atomicMass": 251, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 99, "name": "Einsteinium", "atomicMass": 252, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 100, "name": "Fermium", "atomicMass": 257, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 101, "name": "Mendelevium", "atomicMass": 258, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 102, "name": "Nobelium", "atomicMass": 259, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 103, "name": "Lawrencium", "atomicMass": 262, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 104, "name": "Rutherfordium", "atomicMass": 267, "valency": 4, "state": "solid", "type": "metal" },
+    { "atomicNumber": 105, "name": "Dubnium", "atomicMass": 268, "valency": 5, "state": "solid", "type": "metal" },
+    { "atomicNumber": 106, "name": "Seaborgium", "atomicMass": 271, "valency": 6, "state": "solid", "type": "metal" },
+    { "atomicNumber": 107, "name": "Bohrium", "atomicMass": 270, "valency": 7, "state": "solid", "type": "metal" },
+    { "atomicNumber": 108, "name": "Hassium", "atomicMass": 277, "valency": 8, "state": "solid", "type": "metal" },
+    { "atomicNumber": 109, "name": "Meitnerium", "atomicMass": 278, "valency": 1, "state": "solid", "type": "metal" },
+    { "atomicNumber": 110, "name": "Darmstadtium", "atomicMass": 281, "valency": 1, "state": "solid", "type": "metal" },
+    { "atomicNumber": 111, "name": "Roentgenium", "atomicMass": 282, "valency": 1, "state": "solid", "type": "metal" },
+    { "atomicNumber": 112, "name": "Copernicium", "atomicMass": 285, "valency": 2, "state": "solid", "type": "metal" },
+    { "atomicNumber": 113, "name": "Nihonium", "atomicMass": 286, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 114, "name": "Flerovium", "atomicMass": 289, "valency": 4, "state": "solid", "type": "metal" },
+    { "atomicNumber": 115, "name": "Moscovium", "atomicMass": 288, "valency": 3, "state": "solid", "type": "metal" },
+    { "atomicNumber": 116, "name": "Livermorium", "atomicMass": 293, "valency": 4, "state": "solid", "type": "metal" },
+    { "atomicNumber": 117, "name": "Tennessine", "atomicMass": 294, "valency": 1, "state": "solid", "type": "nonmetal" },
+    { "atomicNumber": 118, "name": "Oganesson", "atomicMass": 294, "valency": 0, "state": "gas", "type": "nonmetal" }
+
+    ];
+
+    function populateTable() {
+        const tableBody = document.getElementById('elementsTable').getElementsByTagName('tbody')[0];
+        elements.forEach(element => {
+            const row = tableBody.insertRow();
+            row.insertCell(0).innerText = element.atomicNumber;
+            row.insertCell(1).innerText = element.name;
+            row.insertCell(2).innerText = element.atomicMass;
+            row.insertCell(3).innerText = element.valency;
+            row.insertCell(4).innerText = element.state;
+            row.insertCell(5).innerText = element.type;
+        });
+    }
+
+    function searchElements() {
+        const input = document.getElementById('searchBar').value.toLowerCase();
+        const tableBody = document.getElementById('elementsTable').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = ''; // Clear the table
+
+        elements.forEach(element => {
+            if (element.name.toLowerCase().includes(input) ||
+                element.atomicNumber.toString().includes(input)) {
+                const row = tableBody.insertRow();
+                row.insertCell(0).innerText = element.atomicNumber;
+                row.insertCell(1).innerText = element.name;
+                row.insertCell(2).innerText = element.atomicMass;
+                row.insertCell(3).innerText = element.valency;
+                row.insertCell(4).innerText = element.state;
+                row.insertCell(5).innerText = element.type;
+            }
+        });
+    }
+
+    // Populate the table on page load
+    window.onload = populateTable;
+</script>
+
+</body>
+</html>
